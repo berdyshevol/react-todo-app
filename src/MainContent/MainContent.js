@@ -1,70 +1,91 @@
-import React, {Component} from "react";
-import uuid from 'react-uuid'
+import React, { Component } from "react";
+import uuid from "react-uuid";
 import List from "../List/List";
-import './MainContent.css'
+import "./MainContent.css";
 
 class MainContent extends Component {
   state = {
     inputValue: "",
     values: [],
-  }
+  };
 
-  handlePress = ({key}) => {
-    if (key === 'Enter') {
-      this.setState(prevState => ({
-          ...prevState,
-          values: [
-                    ...prevState.values,
-                    {
-                      uuid: uuid(),
-                      value: prevState.inputValue,
-                    }
-                  ],
-          inputValue: "",
-        })
-      )
+  handlePress = ({ key }) => {
+    if (key === "Enter") {
+      if (this.state.inputValue ==='') return
+      this.setState((prevState) => (
+        {
+        ...prevState,
+        values: [
+          ...prevState.values,
+          {
+            uuid: uuid(),
+            value: prevState.inputValue,
+            date: new Date(),
+            isEdit: false,
+          },
+        ],
+        inputValue: "",
+      }));
     }
-  }
+  };
 
-  handleChange = event => {
-    const {name, value} = event.target
-    this.setState({[name]: value})
-  }
+  handleChange = (event) => {
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
+  };
 
-  handleKeyDown = ({key}) => {
-    if (key === 'Escape') {
-      this.setState({inputValue: ""})
+  handleKeyDown = ({ key }) => {
+    if (key === "Escape") {
+      this.setState({ inputValue: "" });
     }
-  }
+  };
 
   handleDelete = (uuid) => {
-    console.log("Delete", uuid)
-    this.setState(prevState =>
-            ({
-              ...prevState,
-              values: prevState.values.filter( v => v.uuid !== uuid)
-            })
-      )
-  }
+    this.setState((prevState) => ({
+      ...prevState,
+      values: prevState.values.filter((v) => v.uuid !== uuid),
+    }));
+  };
 
-  handleEdit = (uuid, newValue) => {
-    this.setState(prevState =>
-      ({
-        ...prevState,
-        values: prevState.values.map( v =>
-          v.uuid == uuid
-            ? v = {uuid: v.uuid, value: newValue}
-            : v
-        )
-      })
-    )
+  handleSave = (uuid, value) => {
+    if (value === '') return
+    this.setState((prevState) => ({
+      ...prevState,
+      values: prevState.values.map((item) => {
+        if (item.uuid !== uuid) {
+          return item;
+        }
+        return {
+          ...item,
+          value,
+          date: new Date(),
+          isEdit: false,
+        };
+      }),
+    }));
+  };
+
+  handleEdit = (uuid, isEdit) => {
+    this.setState((prevState) => ({
+      ...prevState,
+      values: prevState.values.map((item) => {
+        if (item.uuid !== uuid) {
+          return item;
+        }
+        return {
+          ...item,
+          isEdit,
+        };
+      }),
+    }));
   }
 
   render() {
-    const {inputValue, values} = this.state
+    const { inputValue, values } = this.state;
     return (
-      <div className='todo-list'>
+      <div className="todo-list">
         <input
+          className="main-input"
           type="text"
           name="inputValue"
           value={inputValue}
@@ -74,12 +95,13 @@ class MainContent extends Component {
         />
         <List
           values={values}
-          delete={this.handleDelete}
-          edit={this.handleEdit}
+          handleDelete={this.handleDelete}
+          handleEdit={this.handleEdit}
+          handleSave={this.handleSave}
         />
       </div>
-    )
+    );
   }
 }
 
-export default MainContent
+export default MainContent;

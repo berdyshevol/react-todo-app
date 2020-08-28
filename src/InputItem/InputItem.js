@@ -1,45 +1,42 @@
-import React, {Component} from "react";
-import './InputItem.css'
+import React, { Component } from "react";
+import "./InputItem.css";
 
 class InputItem extends Component {
+  state = {
+    input: this.props.data.value,
+  };
 
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      input: props.data.value,
+  handleChange = (event) => {
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
+  };
+
+  handleKeyPress = ({ key }) => {
+    if (key === "Enter") {
+        this.props.handleSave(this.props.data.uuid, this.state.input);
     }
-  }
-
-  handleChange = event => {
-    const {name, value} = event.target
-    this.setState({[name] : value})
-  }
-
-  handleEnter = ({key}) => {
-    if (key === 'Enter') {
-      this.saveAndStopEdit()
+    if (key === "Escape") {
+      this.props.handleEdit(this.props.data.uuid, false)
     }
-  }
-
-  saveAndStopEdit = () => {
-    this.props.edit(this.props.data.uuid, this.state.input)
-    this.props.stopEdit()
-  }
+  };
 
   render() {
-    const {input} = this.state
+    const { input } = this.state
+    const { data, handleEdit } = this.props
     return (
-      <input className="input"
-             type="text"
-             value={input}
-             name="input"
-             onChange={this.handleChange}
-             onKeyPress={this.handleEnter}
-             autoFocus={true}
-             onBlur={this.saveAndStopEdit}
+      <input
+        className="input"
+        type="text"
+        value={input}
+        name="input"
+        onChange={this.handleChange}
+        onKeyPress={this.handleKeyPress}
+        onKeyDown={this.handleKeyPress}
+        autoFocus={true}
+        onBlur={() => handleEdit(data.uuid, false)}
       />
-    )
+    );
   }
 }
 
-export default InputItem
+export default InputItem;

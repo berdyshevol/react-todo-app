@@ -1,26 +1,22 @@
-.display-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0;
-    padding: 0;
-}
 h2 {
     font-size: 18px;
     font-weight: bold;
     width: 100px;
 }
 
-li {
+.todo-item {
     margin: 0;
-    padding: 0;
+    padding: 10px;
 }
 
-.todo-item {
-    margin: 5px 10px;
-    padding: 5px 10px;
-    height: 35px;
+.display-item {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
+
 .todo-item:hover {
     background-color: #cecece;
     border-radius: 3px;

@@ -1,30 +1,37 @@
 import React from "react";
-import InputItem from "../InputItem/InputItem";
+import InputItem from "../InputItem/InputItem"
 
-const ItemDummy = (props) => (
-  <div className="todo-item">
-    <li onDoubleClick={() => props.editButton()} >
-      {!props.data.isEdit
+import "./Item.css"
+import Time from "../Time/Time";
+
+const ItemDummy = ({ data, handleEdit, handleDelete, handleSave}) => (
+    <li
+      onDoubleClick={() => handleEdit(data.uuid, true)}
+      className="todo-item"
+    >
+      {!data.isEdit
         ?
         <div className="display-item">
           <h2>
-            {props.data.value}
+            {data.value}
           </h2>
           <div>
-            <button onClick={() => props.editButton()}>Edit</button>
-            <button onClick={() => props.delete(props.data.uuid)}>Delete
+            <Time date={data.date} />
+            <button onClick={() => handleEdit(data.uuid, true)}>Edit</button>
+            <button onClick={() => handleDelete(data.uuid)}>Delete
             </button>
           </div>
         </div>
         :
-        <InputItem
-          data={props.data}
-          edit={props.edit}
-          stopEdit={props.stopEdit}
-        />
+        <div className="display-item">
+          <InputItem
+          data={data}
+          handleSave={handleSave}
+          handleEdit={handleEdit}
+          />
+        </div>
       }
     </li>
-  </div>
 )
 
 export default ItemDummy

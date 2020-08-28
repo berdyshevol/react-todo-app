@@ -1,7 +1,8 @@
 .input:focus {
     font-size: 18px;
     font-weight: bold;
-    height: 30px;
+    /* height: 30px; */
+    padding: 15px;
     background-color: white;
     width: 100%;
     outline: none;

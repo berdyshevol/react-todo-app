@@ -1,20 +1,19 @@
 import React from "react";
-import ItemSmart from "../Item/ItemSmart";
 import './List.css'
+import ItemDummy from "../Item/ItemDummy";
 
 const List = props => (
-  <div className="list">
-    <ul>
-      { props.values.map( ({ value, uuid }) =>
-        <ItemSmart
+    <ul className="list">
+      { props.values.map( ({ value, uuid, date, isEdit }) =>
+        <ItemDummy
           key={uuid}
-          data={{value, uuid}}
-          delete={props.delete}
-          edit={props.edit}
+          data={{value, uuid, date, isEdit}}
+          handleDelete={props.handleDelete}
+          handleEdit={props.handleEdit}
+          handleSave={props.handleSave}
         />
         )}
     </ul>
-  </div>
 )
 
 export default List
